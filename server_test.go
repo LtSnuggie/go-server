@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var testSrv srv
+var testServer Server
 var testText string
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
@@ -18,7 +18,7 @@ func init() {
 }
 
 func TestGetServer(t *testing.T) {
-	testSrv = New("8077")
+	testServer = New("8077")
 }
 
 func TestEndpointBeforeLoad(t *testing.T) {
@@ -33,7 +33,7 @@ func TestEndpointBeforeLoad(t *testing.T) {
 }
 
 func TestLoadEndpoint(t *testing.T) {
-	testSrv.LoadEndpoint("test endpoint", "/test", "GET", testHandlerFunc)
+	testServer.LoadEndpoint("test endpoint", "/test", "GET", testHandlerFunc)
 	resp, err := http.Get("http://localhost:8077/test")
 	if err != nil {
 		t.Error(err)
@@ -48,7 +48,7 @@ func TestLoadEndpoint(t *testing.T) {
 	}
 }
 func TestStopServer(t *testing.T) {
-	testSrv.Stop()
+	testServer.Stop()
 }
 
 func testHandlerFunc(w http.ResponseWriter, r *http.Request) {

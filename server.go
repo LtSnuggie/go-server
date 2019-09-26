@@ -26,16 +26,15 @@ var routes = []Route{
 	// },
 }
 
-type srv struct {
+type Server struct {
 	router *mux.Router
-	port   string
 	server *http.Server
 }
 
 // var router *mux.Router
 var server *http.Server
 
-func New(port string) srv {
+func New(port string) Server {
 
 	r := mux.NewRouter()
 
@@ -63,18 +62,17 @@ func New(port string) srv {
 	}).Warn("Server started...")
 	go server.ListenAndServe()
 
-	return srv{
+	return Server{
 		router: r,
-		port:   port,
 		server: server,
 	}
 }
 
-func (s *srv) LoadEndpoint(name, path, method string, handlerFunc http.HandlerFunc) {
+func (s *Server) LoadEndpoint(name, path, method string, handlerFunc http.HandlerFunc) {
 	log.WithFields(log.Fields{
-		"method":   method,
-		"endpoint": path,
-		"date":     time.Now(),
+		"httpMethod": method,
+		"endpoint":   path,
+		"date":       time.Now(),
 	}).Infof("%v end point loaded...", name)
 
 	s.router.
@@ -84,6 +82,6 @@ func (s *srv) LoadEndpoint(name, path, method string, handlerFunc http.HandlerFu
 		Handler(handlerFunc)
 }
 
-func (s *srv) Stop() {
+func (s *Server) Stop() {
 	s.server.Close()
 }
