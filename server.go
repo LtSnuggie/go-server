@@ -1,6 +1,7 @@
 package server
 
 import (
+	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -41,7 +42,7 @@ func New(port string) Server {
 	r.Use(communication.LoggingMiddleware)
 	log.WithFields(log.Fields{
 		"date": time.Now(),
-	}).Warn("Starting server...")
+	}).Info("Starting server...")
 
 	// These two lines are important if you're designing a front-end to utilise this API methods
 	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
@@ -59,13 +60,21 @@ func New(port string) Server {
 	}
 	log.WithFields(log.Fields{
 		"date": time.Now(),
-	}).Warn("Server started...")
+	}).Info("Server started...")
 	go server.ListenAndServe()
 
 	return Server{
 		router: r,
 		server: server,
 	}
+}
+
+func (s *Server) AddMiddleware(m func(http.Handler) http.Handler) {
+	s.router.Use(m)
+}
+
+func (s *Server) DisableLogging() {
+	log.SetOutput(ioutil.Discard)
 }
 
 func (s *Server) LoadEndpoint(name, path, method string, handlerFunc http.HandlerFunc) {

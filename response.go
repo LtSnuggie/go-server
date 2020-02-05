@@ -9,7 +9,11 @@ import (
 )
 
 func ReturnSuccess(w http.ResponseWriter) {
-	w.Write([]byte("success"))
+	ReturnSuccessMessage(w, []byte("success"))
+}
+
+func ReturnSuccessMessage(w http.ResponseWriter, message []byte) {
+	w.Write(message)
 	w.WriteHeader(200)
 }
 
