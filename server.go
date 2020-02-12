@@ -47,7 +47,7 @@ func New(port string) Server {
 	// These two lines are important if you're designing a front-end to utilise this API methods
 	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT"})
-	allowedHeaders := handlers.AllowedHeaders([]string{"Authorization"})
+	allowedHeaders := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 	// Access-Control-Allow-Headers: Authorization
 
 	// Launch server with CORS validations
