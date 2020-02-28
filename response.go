@@ -14,7 +14,7 @@ func ReturnSuccess(w http.ResponseWriter) {
 
 func ReturnSuccessMessage(w http.ResponseWriter, message []byte) {
 	w.Write(message)
-	w.WriteHeader(200)
+	// w.WriteHeader(200)
 }
 
 func ReturnError(w http.ResponseWriter, err error, msg string) {
